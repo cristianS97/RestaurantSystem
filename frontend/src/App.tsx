@@ -1,21 +1,49 @@
 import './App.css'
-import LogoutButton from './components/LogoutButton'
-import UserList from './components/UserList'
-import LoginForm from './components/LoginForm'
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import ProductList from './components/menu/ProductList';
+import UserList from './components/user/UserList';
+import ProductForm from './components/menu/ProductForm';
+import Menu from './components/navegacion/Menu';
+import LoginForm from './components/login/LoginForm';
+import PrivateRoute from './components/auth/PrivateRoute';
 
 function App() {
-  const accessToken = localStorage.getItem('accessToken');
   return (
-    <div>
-      <header>
-        <h1>Restaurante</h1>
-        {accessToken && <LogoutButton />}
-      </header>
-      <main>
-        {accessToken ? <UserList /> : <LoginForm />}
-      </main>
-    </div>
-  )
+    <>
+      <Menu />
+      <Routes>
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/" element={<Navigate to="/products" />} />
+        
+        {/* Rutas protegidas */}
+        <Route
+          path="/products"
+          element={
+            <PrivateRoute>
+              <ProductList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/users"
+          element={
+            <PrivateRoute>
+              <UserList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/add-product"
+          element={
+            <PrivateRoute>
+              <ProductForm />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
+    </>
+  );
 }
 
-export default App
+export default App;
