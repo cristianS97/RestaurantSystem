@@ -1,26 +1,71 @@
 import type { User } from '../types/user';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api'; // URL de la API definida en .env
+const API_URL = import.meta.env.VITE_API_URL;
 
-// Función para obtener la lista de usuarios
 export const getUsers = async (): Promise<User[]> => {
-    const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';  // Asegúrate de tener la URL correcta
-    const response = await fetch(`${apiUrl}/users/`);
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+        throw new Error('No hay token. El usuario no está autenticado.');
+    }
+
+    const response = await fetch(`${API_URL}/users/`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        }
+    });
+
     if (!response.ok) {
         throw new Error('Error al obtener los usuarios');
     }
+
     const data = await response.json();
-    return data;  // Devuelve los datos como arreglo de usuarios
+    return data;
+};
+
+export const login = async (email: string, password: string) => {
+    const response = await fetch(`${API_URL}/token/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+    });
+
+    if (!response.ok) {
+        throw new Error('Credenciales incorrectas');
+    }
+
+    const data = await response.json();
+    localStorage.setItem('accessToken', data.access);
+    localStorage.setItem('refreshToken', data.refresh);
+    return data;
 };
 
 // Función para hacer logout
 export async function logout() {
-    const response = await fetch(`${API_URL}/auth/logout/`, {
+    const refresh = localStorage.getItem('refreshToken');
+
+    if (!refresh) {
+        throw new Error('No hay token de refresco');
+    }
+
+    const response = await fetch(`${API_URL}/logout/`, {
         method: 'POST',
-        credentials: 'include', // Si estás usando cookies de sesión
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ refresh }),
     });
+
     if (!response.ok) {
         throw new Error('Error al hacer logout');
     }
+
+    // Elimina ambos tokens del localStorage
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
     return response.json();
 }

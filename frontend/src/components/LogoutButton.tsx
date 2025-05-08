@@ -1,7 +1,7 @@
 import React from 'react';
 import { logout } from '../services/api';
 
-const LogoutButton = () => {
+const LogoutButton: React.FC = () => {
     const handleLogout = async () => {
         try {
             await logout();

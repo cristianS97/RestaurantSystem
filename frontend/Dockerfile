@@ -1,28 +1,19 @@
-# Utilizamos una imagen base de Node.js
-FROM node:18 AS build
+FROM node:18
 
-# Definimos el directorio de trabajo
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copiamos el package.json y el package-lock.json para instalar dependencias
+# Copia archivos de dependencias primero
 COPY package.json package-lock.json ./
 
-# Instalamos las dependencias
+# Instala las dependencias
 RUN npm install
 
-# Copiamos todo el código fuente de la app
+# Copia el resto del código fuente
 COPY . .
 
-# Creamos la app para producción
-RUN npm run build
+# Expone el puerto por defecto de Vite
+EXPOSE 5173
 
-# Servimos la app usando nginx
-FROM nginx:alpine
-
-# Copiamos los archivos generados en la etapa anterior
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Exponemos el puerto 80
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+# Inicia el frontend
+CMD ["npm", "run", "dev"]

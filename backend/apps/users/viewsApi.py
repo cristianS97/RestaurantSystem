@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .serializers import UserRegisterSerializer, UserSerializer
 from .models import User
 from .functions import code_generator
@@ -18,7 +18,7 @@ class RegisterAPIView(APIView):
             user.save()
             # Aquí se puede enviar el código por correo
             print("Código de registro:", code)
-            return Response({'message': 'Usuario creado. Verifica el código.', 'user_id': user.id}, status=status.HTTP_201_CREATED)
+            return Response({'message': 'Usuario creado. Verifica el código.', 'user_id': user.id, 'code': f'{code}'}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class VerifyCodeAPIView(APIView):
@@ -38,6 +38,7 @@ class VerifyCodeAPIView(APIView):
             return Response({'error': 'Usuario no encontrado'}, status=404)
 
 class UserListAPIView(APIView):
+    permission_classes = [IsAuthenticated]
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
