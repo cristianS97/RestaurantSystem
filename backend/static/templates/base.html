@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+        <ul>
+            <li>
+                <a href="{% url 'users_app:logout' %}">Cerrar sesión</a>
+            </li>
+            <li>
+                <a href="{% url 'users_app:update-password' %}">Actualizar contraseña</a>
+            </li>
+        </ul>
+    {% endif %}
+    {% block content %}{% endblock content %}
+</body>
+</html>

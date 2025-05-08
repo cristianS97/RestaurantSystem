@@ -14,7 +14,7 @@ services:
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
     ports:
-      - 5432:5433
+      - 5433:5432
 
   pgadmin:
     container_name: pgadmin
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./postgres/pgadmin:/var/lib/pgadmin
     depends_on:
-      - postgres
+      - db
 
   # backend:
   #   container_name: backend
@@ -42,11 +42,13 @@ services:
   #     - "8000:8000"
   #   depends_on:
   #     - db
+  #     - pgadmin
   #   environment:
-  #     - DB_NAME=restaurant_db
+  #     - DB_NAME=restaurant
   #     - DB_USER=postgres
   #     - DB_PASSWORD=postgres
   #     - DB_HOST=db
+  #     - DB_PORT=5432
 
   # frontend:
   #   container_name: frontend
