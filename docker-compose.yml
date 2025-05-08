@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: restaurantDB
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: restaurant
+    networks:
+      - net
+    volumes:
+      - ./postgres/data:/var/lib/postgresql/data
+    ports:
+      - 5432:5433
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 8080:80
+    networks:
+      - net
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    volumes:
+      - ./postgres/pgadmin:/var/lib/pgadmin
+    depends_on:
+      - postgres
+
+  # backend:
+  #   container_name: backend
+  #   build: ./backend
+  #   command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+  #   volumes:
+  #     - ./backend:/app
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
+  #   environment:
+  #     - DB_NAME=restaurant_db
+  #     - DB_USER=postgres
+  #     - DB_PASSWORD=postgres
+  #     - DB_HOST=db
+
+  # frontend:
+  #   container_name: frontend
+  #   build: ./frontend
+  #   volumes:
+  #     - ./frontend:/app
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - backend
+
+networks:
+  net:
+
+volumes:
+  postgres_data:
