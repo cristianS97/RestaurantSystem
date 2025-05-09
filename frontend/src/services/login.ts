@@ -16,6 +16,8 @@ export const login = async (email: string, password: string) => {
     const data = await response.json();
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
+    localStorage.setItem('role', data.role);
+    localStorage.setItem('username', data.username);
     return data;
 };
 
@@ -40,8 +42,7 @@ export async function logout() {
     }
 
     // Elimina ambos tokens del localStorage
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    localStorage.clear()
 
     return response.json();
 }

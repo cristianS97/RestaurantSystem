@@ -20,8 +20,6 @@ const LoginForm: React.FC = () => {
         setError(null);
         try {
             const data = await login(email, password);
-            localStorage.setItem('accessToken', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
             navigate('/products');
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');

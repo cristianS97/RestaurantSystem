@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { getProducts } from '../../services/menu';
+import { useNavigate } from 'react-router-dom';
+import { getProducts, deleteProduct } from '../../services/menu';
 import type { Product } from '../../types/product';
 
 const ProductList: React.FC = () => {
+    const navigate = useNavigate();
     const [products, setProducts] = useState<Product[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -21,6 +23,15 @@ const ProductList: React.FC = () => {
         fetchProducts();
     }, []);
 
+    const eliminarProducto = async (id: number) => {
+    try {
+        await deleteProduct(id);
+        setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
+    } catch (error) {
+        console.error('Error al eliminar el producto:', error);
+    }
+};
+
     if (loading) return <div>Cargando productos...</div>;
 
     return (
@@ -33,6 +44,10 @@ const ProductList: React.FC = () => {
                         <p>{product.description}</p>
                         <p>Precio: ${product.price}</p>
                         <p>Categoría: {product.category.name}</p>
+                        <p>
+                            <button onClick={() => eliminarProducto(product.id)}>Eliminar producto</button>
+                            <button onClick={() => navigate(`/product/edit/${product.id}`)}>Editar producto</button>
+                        </p>
                     </li>
                 ))}
             </ul>

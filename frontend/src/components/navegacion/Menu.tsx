@@ -17,7 +17,7 @@ const Menu: React.FC = () => {
                 <>
                     <Link to="/products" style={{ marginRight: '1rem' }}>Productos</Link>
                     <Link to="/users" style={{ marginRight: '1rem' }}>Usuarios</Link>
-                    <Link to="/add-product">Agregar Producto</Link>
+                    <Link to="/product/new">Agregar Producto</Link>
                 </>
             )}
             <li>
