@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
 import { getProducts, deleteProduct } from '../../services/menu';
 import type { Product } from '../../types/product';
@@ -24,19 +25,33 @@ const ProductList: React.FC = () => {
     }, []);
 
     const eliminarProducto = async (id: number) => {
-    try {
-        await deleteProduct(id);
-        setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
-    } catch (error) {
-        console.error('Error al eliminar el producto:', error);
-    }
-};
+        const confirmacion = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: 'Esta acción eliminará el producto permanentemente.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        });
+
+        if (confirmacion.isConfirmed) {
+            try {
+                await deleteProduct(id);
+                setProducts(prevProducts => prevProducts.filter(p => p.id !== id));
+                Swal.fire('Eliminado', 'El producto ha sido eliminado.', 'success');
+            } catch (error) {
+                console.error('Error al eliminar el producto:', error);
+                Swal.fire('Error', 'No se pudo eliminar el producto.', 'error');
+            }
+        }
+    };
 
     if (loading) return <div>Cargando productos...</div>;
 
     return (
         <div>
             <h2>Menú</h2>
+            <button onClick={() => navigate('/product/create')}>Nuevo Producto</button>
             <ul>
                 {products.map(product => (
                     <li key={product.id}>

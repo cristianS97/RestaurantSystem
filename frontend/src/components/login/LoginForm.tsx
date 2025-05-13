@@ -20,7 +20,7 @@ const LoginForm: React.FC = () => {
         e.preventDefault();
         setError(null);
         try {
-            const data = await login(email, password);
+            await login(email, password);
             navigate('/products');
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');

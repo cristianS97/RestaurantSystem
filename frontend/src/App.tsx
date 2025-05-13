@@ -7,6 +7,8 @@ import ProductForm from './components/menu/ProductForm';
 import Menu from './components/navegacion/Menu';
 import LoginForm from './components/login/LoginForm';
 import PrivateRoute from './components/auth/PrivateRoute';
+import CategoryList from './components/category/CategoryList';
+import CategoryForm from './components/category/CategoryForm';
 
 function App() {
   return (
@@ -15,16 +17,7 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/" element={<Navigate to="/products" />} />
-        
         {/* Rutas protegidas */}
-        <Route
-          path="/products"
-          element={
-            <PrivateRoute>
-              <ProductList />
-            </PrivateRoute>
-          }
-        />
         <Route
           path="/users"
           element={
@@ -34,7 +27,15 @@ function App() {
           }
         />
         <Route
-          path="/product/new"
+          path="/products"
+          element={
+            <PrivateRoute>
+              <ProductList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/product/create"
           element={
             <PrivateRoute>
               <ProductForm />
@@ -46,6 +47,30 @@ function App() {
           element={
             <PrivateRoute>
               <ProductForm />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <PrivateRoute>
+              <CategoryList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/category/create"
+          element={
+            <PrivateRoute>
+              <CategoryForm />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/category/edit/:id"
+          element={
+            <PrivateRoute>
+              <CategoryForm />
             </PrivateRoute>
           }
         />

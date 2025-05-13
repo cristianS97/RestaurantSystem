@@ -109,3 +109,70 @@ export const getCategories = async (): Promise<Category[]> => {
 
     return await response.json();
 };
+
+export const getCategory = async (id: number): Promise<Category> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`${API_URL}/categories/${id}/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) throw new Error('Error al obtener la categoría');
+
+    return await response.json();
+};
+
+export const createCategory = async (categoryData: Omit<Category, 'id'>): Promise<Category> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`${API_URL}/categories/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(categoryData),
+    });
+
+    if (!response.ok) throw new Error('Error al crear la categoría');
+
+    return await response.json();
+};
+
+export const updateCategory = async (id: number, categoryData: Omit<Category, 'id'>): Promise<Category> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`${API_URL}/categories/${id}/`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(categoryData),
+    });
+
+    if (!response.ok) throw new Error('Error al actualizar la categoría');
+
+    return await response.json();
+};
+
+export const deleteCategory = async (id: number): Promise<void> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`${API_URL}/categories/${id}/`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) throw new Error('Error al eliminar la categoría');
+};

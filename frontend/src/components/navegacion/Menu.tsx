@@ -15,9 +15,9 @@ const Menu: React.FC = () => {
         <nav style={{ padding: '1rem', background: '#eee' }}>
             {isAuthenticated && (
                 <>
-                    <Link to="/products" style={{ marginRight: '1rem' }}>Productos</Link>
                     <Link to="/users" style={{ marginRight: '1rem' }}>Usuarios</Link>
-                    <Link to="/product/new">Agregar Producto</Link>
+                    <Link to="/products" style={{ marginRight: '1rem' }}>Productos</Link>
+                    <Link to="/categories" style={{ marginRight: '1rem' }}>Categorias</Link>
                 </>
             )}
             <li>
