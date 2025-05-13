@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import { getCategories, createProduct, updateProduct, getProduct } from '../../services/menu';
 import type { Category } from '../../types/category';
 import type { ProductInput, ProductFormProps } from '../../types/product';
@@ -38,36 +39,50 @@ const ProductForm: React.FC<ProductFormProps> = ({ product }) => {
     }, [id]);
 
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    e.preventDefault();
 
-        const selectedCategory = categories.find(cat => cat.id === Number(category));
+    if (name.trim().length < 3) {
+        Swal.fire('Error', 'El nombre debe tener al menos 3 caracteres', 'error');
+        return;
+    }
 
-        if (!selectedCategory) {
-            console.error("Categoría inválida");
-            return;
-        }
+    if (description.trim().length < 10) {
+        Swal.fire('Error', 'La descripción debe tener al menos 10 caracteres', 'error');
+        return;
+    }
 
-        console.log(selectedCategory)
+    if (price <= 0) {
+        Swal.fire('Error', 'El precio debe ser mayor a 0', 'error');
+        return;
+    }
 
-        const productData : ProductInput = {
-            name,
-            description,
-            price,
-            category_id: selectedCategory.id,
-        };
+    const selectedCategory = categories.find(cat => cat.id === Number(category));
+    if (!selectedCategory) {
+        Swal.fire('Error', 'Debe seleccionar una categoría válida', 'error');
+        return;
+    }
 
-        try {
-            if (esEdicion && id) {
-                await updateProduct(Number(id), productData);
-                navigate('/products');
-            } else {
-                await createProduct(productData);
-                navigate('/products');
-            }
-        } catch (error) {
-            console.error('Error al guardar el producto:', error);
-        }
+    const productData: ProductInput = {
+        name,
+        description,
+        price,
+        category_id: selectedCategory.id,
     };
+
+    try {
+        if (esEdicion && id) {
+            await updateProduct(Number(id), productData);
+            Swal.fire('Éxito', 'Producto actualizado correctamente', 'success');
+        } else {
+            await createProduct(productData);
+            Swal.fire('Éxito', 'Producto creado correctamente', 'success');
+        }
+        navigate('/products');
+    } catch (error) {
+        console.error('Error al guardar el producto:', error);
+        Swal.fire('Error', 'Hubo un problema al guardar el producto', 'error');
+    }
+};
 
     return (
         <>

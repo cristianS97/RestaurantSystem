@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import { login } from '../../services/login';
 import { useNavigate } from 'react-router-dom';
 
@@ -23,6 +24,7 @@ const LoginForm: React.FC = () => {
             navigate('/products');
         } catch (err: any) {
             setError(err.message || 'Error al iniciar sesión');
+            Swal.fire('Error', err.message || 'Error al iniciar sesión', 'error');
         }
     };
 
