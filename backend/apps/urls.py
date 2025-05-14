@@ -1,6 +1,5 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-
 from apps.menu.views import ProductViewSet, CategoryViewSet
 from apps.order.views import TableViewSet, OrderViewSet
 
