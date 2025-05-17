@@ -37,7 +37,8 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - Usuario personalizado con roles
   - Categorías de productos
   - Productos del menú
-  - (Próximamente) Mesas, Pedidos, Pagos, Facturación
+  - Mesas
+  - Pedidos
 - Endpoints:
   - `/api/register/` – Registro de usuarios
   - `/api/verify/` – Verificación por código
@@ -45,15 +46,14 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - `/api/token/refresh/` – Refrescar token
   - `/api/products/` – CRUD de productos
   - `/api/categories/` – CRUD de categorías
+  - `/api/tables/` – CRUD de mesas
+  - `/api/orders/` – Crear y gestionar pedidos
 
 ### 2. Frontend Web
-- Login
-- Vista para mozos (crear/ver pedidos) *(pendiente)*
-- Vista para cocina (ver/cambiar estado pedidos) *(pendiente)*
-- Vista de administración:
-  - CRUD de productos
-  - CRUD de categorías
-- Protección de rutas según rol *(en desarrollo)*
+- Login y logout
+- Listado de usuarios
+- CRUD de productos
+- CRUD de categorías
 
 ### 3. App Android
 - Jetpack Compose
@@ -72,22 +72,20 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 
 ### Requisitos
 - Docker y Docker Compose instalados
-- Node.js (si se corre frontend localmente fuera de contenedor)
+- Node.js (solo si se corre frontend localmente fuera del contenedor)
 
 ### Instrucciones
 
-```bash
-# Clonar el repositorio
-git clone https://github.com/tu_usuario/RestaurantSystem.git
-cd RestaurantSystem
+    # Clonar el repositorio
+    git clone https://github.com/tu_usuario/RestaurantSystem.git
+    cd RestaurantSystem
 
-# Copiar archivos .env si es necesario
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+    # Copiar archivos .env
+    cp backend/.env.example backend/.env
+    cp frontend/.env.example frontend/.env
 
-# Levantar el proyecto
-docker-compose up --build
-```
+    # Levantar el proyecto
+    docker-compose up --build
 
 ### Backend disponible en:
 `http://localhost:8000`
@@ -99,7 +97,7 @@ docker-compose up --build
 
 ## Usuarios
 
-Se utiliza un modelo personalizado de usuario con campos extra como:
+Se utiliza un modelo personalizado de usuario con los siguientes campos:
 
 - `names`
 - `last_name`
@@ -112,11 +110,13 @@ El registro genera un código de verificación (futura integración con email).
 
 ## Próximos Pasos
 
-- Gestión de pedidos y mesas
-- Roles y permisos más detallados
-- Vistas específicas por tipo de usuario en frontend y móvil
-- Integración de facturación/pagos
-- Despliegue en nube
+- Vista para mozos
+- Vista para cocina
+- Gestión de estados de pedidos
+- Vistas y navegación completas en app móvil
+- Gestión de usuarios y permisos desde el frontend
+- Integración de facturación y pagos
+- Despliegue en servicios en la nube (ej: Render, Railway, AWS)
 
 ---
 
