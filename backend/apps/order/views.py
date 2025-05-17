@@ -12,6 +12,18 @@ class TableViewSet(viewsets.ModelViewSet):
     serializer_class = TableSerializer
     # permission_classes = [IsAuthenticated]
 
+    @action(detail=False, methods=['get'])
+    def disponibles(self, request):
+        disponibles = Table.objects.filter(is_active=True)
+        serializer = self.get_serializer(disponibles, many=True)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def ocupadas(self, request):
+        no_disponibles = Table.objects.filter(is_active=False)
+        serializer = self.get_serializer(no_disponibles, many=True)
+        return Response(serializer.data)
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
