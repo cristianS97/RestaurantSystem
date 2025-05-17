@@ -15,10 +15,11 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 class OrderSerializer(serializers.ModelSerializer):
     items = OrderItemSerializer(many=True)
+    total = serializers.SerializerMethodField()
 
     class Meta:
         model = Order
-        fields = ['id', 'table', 'user', 'created_at', 'status', 'items']
+        fields = ['id', 'table', 'user', 'created_at', 'status', 'items', 'total']
 
     def create(self, validated_data):
         items_data = validated_data.pop('items')
@@ -26,3 +27,32 @@ class OrderSerializer(serializers.ModelSerializer):
         for item_data in items_data:
             OrderItem.objects.create(order=order, **item_data)
         return order
+
+    def update(self, instance, validated_data):
+        items_data = validated_data.pop('items', [])
+
+        # Actualizar los campos simples de la orden
+        instance.table = validated_data.get('table', instance.table)
+        instance.user = validated_data.get('user', instance.user)
+        instance.status = validated_data.get('status', instance.status)
+        instance.save()
+
+        # Eliminar los items actuales y reemplazarlos
+        instance.items.all().delete()
+
+        for item_data in items_data:
+            OrderItem.objects.create(order=instance, **item_data)
+
+        return instance
+
+    def get_total(self, obj):
+        return sum(item.price * item.quantity for item in obj.items.all())
+
+    def validate(self, data):
+        mesa = data.get('table')
+        ordenes_activas = Order.objects.filter(table=mesa, status__in=['pending', 'served'])
+        if self.instance:
+            ordenes_activas = ordenes_activas.exclude(id=self.instance.id)
+        if ordenes_activas.exists():
+            raise serializers.ValidationError("Esta mesa ya tiene una orden activa.")
+        return data
