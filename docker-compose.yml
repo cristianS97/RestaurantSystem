@@ -32,41 +32,39 @@ services:
     depends_on:
       - db
 
-  # backend:
-  #   container_name: backend
-  #   build: ./backend
-  #   command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
-  #   volumes:
-  #     - ./backend:/app
-  #   ports:
-  #     - 8000:8000
-  #   networks:
-  #     - net
-  #   depends_on:
-  #     - db
-  #     - pgadmin
-  #   environment:
-  #     - DB_NAME=restaurant
-  #     - DB_USER=postgres
-  #     - DB_PASSWORD=postgres
-  #     - DB_HOST=db
-  #     - DB_PORT=5432
+  backend:
+    container_name: backend
+    build: ./backend
+    volumes:
+      - ./backend:/app
+    ports:
+      - 8000:8000
+    networks:
+      - net
+    depends_on:
+      - db
+      - pgadmin
+    environment:
+      - DB_NAME=restaurant
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
 
-  # frontend:
-  #   container_name: frontend
-  #   build: ./frontend
-  #   volumes:
-  #     - ./frontend:/app
-  #   networks:
-  #     - net
-  #   ports:
-  #     - 5173:5173
-  #   depends_on:
-  #     - db
-  #     - pgadmin
-  #     - backend
-  #   environment:
-  #       - VITE_API_URL=http://backend:8000/api
+  frontend:
+    container_name: frontend
+    build:
+      context: ./frontend
+    networks:
+      - net
+    ports:
+      - 5173:5173
+    depends_on:
+      - db
+      - pgadmin
+      - backend
+    environment:
+        - VITE_API_URL=http://localhost:8000/api
 
 networks:
   net:

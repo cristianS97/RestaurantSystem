@@ -1,10 +1,10 @@
-FROM node:18
+FROM node:20
 
 # Establece el directorio de trabajo
 WORKDIR /app
 
 # Copia archivos de dependencias primero
-COPY package.json package-lock.json ./
+COPY package.json package-lock.json* ./
 
 # Instala las dependencias
 RUN npm install

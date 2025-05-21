@@ -11,4 +11,10 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 
 COPY . .
 
-CMD ["gunicorn", "backend.wsgi:application", "--bind", "0.0.0.0:8000"]
+RUN python manage.py collectstatic --noinput
+
+COPY wait-for-it.sh /wait-for-it.sh
+COPY entrypoint.sh ./entrypoint.sh
+RUN chmod +x ./wait-for-it.sh ./entrypoint.sh
+
+CMD ["./entrypoint.sh"]
