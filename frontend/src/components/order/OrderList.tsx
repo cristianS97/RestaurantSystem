@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Order } from "../../types/order";
 import { deleteOrder, getOrders } from "../../services/order";
 import { getStatusLabel } from "../../hooks/getStatusLabel";
+import { showModalProducts } from "../../hooks/showModalProducts";
 
 export default function OrderList() {
     const [orders, setOrders] = useState<Order[]>([]);
@@ -17,7 +18,7 @@ export default function OrderList() {
                 setOrders(data);
                 setLoading(false);
             } catch (error) {
-                console.error('Error al obtener usuarios:', error);
+                console.error('Error al obtener órdenes:', error);
                 setLoading(false);
             }
         };
@@ -46,7 +47,7 @@ export default function OrderList() {
         }
     };
 
-    if (loading) return <div>Cargando ordenes...</div>;
+    if (loading) return <div>Cargando órdenes...</div>;
 
     return (
         <div className="p-4">
@@ -56,18 +57,26 @@ export default function OrderList() {
                     <div><strong>Mesa:</strong> {order.table}</div>
                     <div><strong>Estado:</strong> {getStatusLabel(order.status)}</div>
                     <div><strong>Total:</strong> ${order.total.toFixed(2)}</div>
-                    <div className="mt-2">
-                        <strong>Productos:</strong>
-                        <ul className="list-disc ml-5">
-                            {order.items.map(item => (
-                                <li key={item.id}>
-                                    {item.product_name} x {item.quantity} (${(parseFloat(item.price) * item.quantity).toFixed(2)})
-                                </li>
-                            ))}
-                        </ul>
+                    <div className="mt-2 space-x-2">
+                        <button
+                            className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                            onClick={() => showModalProducts(order)}
+                        >
+                            Ver productos
+                        </button>
+                        <button
+                            className="bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                            onClick={() => navigate(`/order/edit/${order.id}`)}
+                        >
+                            Editar
+                        </button>
+                        <button
+                            className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+                            onClick={() => handleDelete(order.id)}
+                        >
+                            Eliminar
+                        </button>
                     </div>
-                    <button onClick={() => navigate(`/order/edit/${order.id}`)}>Editar</button>
-                    <button onClick={() => handleDelete(order.id)}>Eliminar</button>
                 </div>
             ))}
         </div>

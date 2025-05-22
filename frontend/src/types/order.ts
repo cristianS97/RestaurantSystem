@@ -21,8 +21,6 @@ export interface Order {
 export interface OrderInput {
     table: number;
     user: number;
-    created_at: string;
     status: OrderStatus;
     items: OrderItem[];
-    total: number;
 }
