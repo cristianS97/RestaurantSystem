@@ -18,6 +18,7 @@ const Menu: React.FC = () => {
                     <Link to="/users" style={{ marginRight: '1rem' }}>Usuarios</Link>
                     <Link to="/products" style={{ marginRight: '1rem' }}>Productos</Link>
                     <Link to="/categories" style={{ marginRight: '1rem' }}>Categorias</Link>
+                    <Link to="/orders" style={{ marginRight: '1rem' }}>Ordenes</Link>
                 </>
             )}
             <li>

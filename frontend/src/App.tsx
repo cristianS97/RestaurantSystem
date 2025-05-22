@@ -9,6 +9,7 @@ import LoginForm from './components/login/LoginForm';
 import PrivateRoute from './components/auth/PrivateRoute';
 import CategoryList from './components/category/CategoryList';
 import CategoryForm from './components/category/CategoryForm';
+import OrderList from './components/order/OrderList';
 
 function App() {
   return (
@@ -71,6 +72,14 @@ function App() {
           element={
             <PrivateRoute>
               <CategoryForm />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/orders"
+          element={
+            <PrivateRoute>
+              <OrderList />
             </PrivateRoute>
           }
         />
