@@ -97,8 +97,8 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 - cd RestaurantSystem
 
 # Copiar archivos .env
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+- cp backend/.env.example backend/.env
+- cp frontend/.env.example frontend/.env
 
 # Levantar el proyecto
 docker-compose up --build
