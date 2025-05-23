@@ -1,3 +1,4 @@
+
 # RestaurantSystem
 
 Sistema completo para la gestión de un restaurante, incluyendo backend con Django, frontend con React y aplicación móvil con Jetpack Compose. Utiliza PostgreSQL como base de datos y está preparado para desplegarse con Docker Compose.
@@ -12,6 +13,7 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 - Django REST Framework (DRF)
 - Simple JWT (Autenticación)
 - PostgreSQL
+- Swagger / Redoc (Documentación)
 
 ### Frontend Web
 - React
@@ -33,6 +35,9 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 
 ### 1. Backend (API REST)
 - Autenticación JWT
+- Documentación automática:
+  - Swagger: `/swagger/`
+  - Redoc: `/redoc/`
 - Modelos:
   - Usuario personalizado con roles
   - Categorías de productos
@@ -92,19 +97,23 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 
 ### Instrucciones
 
-# Clonar el repositorio
-git clone https://github.com/cristianS97/RestaurantSystem.git
-cd RestaurantSystem
+Clonar el repositorio  
+`git clone https://github.com/cristianS97/RestaurantSystem.git`  
+`cd RestaurantSystem`
 
-# Copiar archivos .env
-cp backend/.env.example backend/.env
-cp frontend/.env.example frontend/.env
+Copiar archivos .env  
+`cp backend/.env.example backend/.env`  
+`cp frontend/.env.example frontend/.env`
 
-# Levantar el proyecto
-docker-compose up --build
+Levantar el proyecto  
+`docker-compose up --build`
 
 ### Backend disponible en:
 http://localhost:8000
+
+### Documentación API:
+- Swagger: http://localhost:8000/swagger/
+- Redoc: http://localhost:8000/redoc/
 
 ### Frontend disponible en:
 http://localhost:5173

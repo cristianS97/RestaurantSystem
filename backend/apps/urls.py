@@ -10,5 +10,5 @@ router.register(r'tables', TableViewSet)
 router.register(r'orders', OrderViewSet)
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('', include(router.urls))
 ]
