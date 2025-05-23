@@ -38,8 +38,8 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - Categorías de productos
   - Productos del menú
   - Mesas
-  - Pedidos
-- Endpoints:
+  - Pedidos y detalles de pedidos (items)
+- Endpoints principales:
   - `/api/register/` – Registro de usuarios
   - `/api/verify/` – Verificación por código
   - `/api/token/` – Obtener token JWT
@@ -47,13 +47,29 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - `/api/products/` – CRUD de productos
   - `/api/categories/` – CRUD de categorías
   - `/api/tables/` – CRUD de mesas
-  - `/api/orders/` – Crear y gestionar pedidos
+
+#### Endpoints especiales para mesas:
+  - `/api/tables/disponibles/` (GET)  
+    Devuelve las mesas activas (disponibles).
+  - `/api/tables/ocupadas/` (GET)  
+    Devuelve las mesas inactivas (ocupadas).
+
+  - `/api/orders/` – CRUD completo de pedidos con manejo de items
+  - `/api/orders/{id}/set-status/` (PATCH)  
+    Cambia el estado de una orden.  
+    Parámetros:  
+    {
+      "status": "pending" | "served" | "paid" | "cancelled"
+    }  
+    Retorna un mensaje de confirmación y el nuevo estado.
 
 ### 2. Frontend Web
 - Login y logout
 - Listado de usuarios
 - CRUD de productos
 - CRUD de categorías
+- CRUD de mesas
+- CRUD de órdenes con creación, edición, eliminación y cambio de estado
 
 ### 3. App Android
 - Jetpack Compose
@@ -76,22 +92,22 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 
 ### Instrucciones
 
-    # Clonar el repositorio
-    git clone https://github.com/cristianS97/RestaurantSystem.git
-    cd RestaurantSystem
+# Clonar el repositorio
+git clone https://github.com/cristianS97/RestaurantSystem.git
+cd RestaurantSystem
 
-    # Copiar archivos .env
-    cp backend/.env.example backend/.env
-    cp frontend/.env.example frontend/.env
+# Copiar archivos .env
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
 
-    # Levantar el proyecto
-    docker-compose up --build
+# Levantar el proyecto
+docker-compose up --build
 
 ### Backend disponible en:
-`http://localhost:8000`
+http://localhost:8000
 
 ### Frontend disponible en:
-`http://localhost:5173`
+http://localhost:5173
 
 ---
 
