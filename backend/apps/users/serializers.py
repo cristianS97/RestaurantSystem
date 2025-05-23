@@ -27,6 +27,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token = super().get_token(user)
 
         # Agregar datos personalizados al token
+        token['id'] = user.id
         token['role'] = user.role
         token['username'] = user.username
         return token
@@ -35,6 +36,7 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data = super().validate(attrs)
 
         # También incluir en la respuesta (opcional pero útil en frontend)
+        data['id'] = self.user.id
         data['role'] = self.user.role
         data['username'] = self.user.username
         return data

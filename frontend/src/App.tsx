@@ -10,6 +10,7 @@ import PrivateRoute from './components/auth/PrivateRoute';
 import CategoryList from './components/category/CategoryList';
 import CategoryForm from './components/category/CategoryForm';
 import OrderList from './components/order/OrderList';
+import OrderForm from './components/order/OrderForm';
 
 function App() {
   return (
@@ -80,6 +81,22 @@ function App() {
           element={
             <PrivateRoute>
               <OrderList />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/order/create"
+          element={
+            <PrivateRoute>
+              <OrderForm />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/order/edit/:id"
+          element={
+            <PrivateRoute>
+              <OrderForm />
             </PrivateRoute>
           }
         />

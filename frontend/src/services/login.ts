@@ -18,10 +18,10 @@ export const login = async (email: string, password: string) => {
     localStorage.setItem('refreshToken', data.refresh);
     localStorage.setItem('role', data.role);
     localStorage.setItem('username', data.username);
+    localStorage.setItem('userid', data.id);
     return data;
 };
 
-// Función para hacer logout
 export async function logout() {
     const refresh = localStorage.getItem('refreshToken');
 

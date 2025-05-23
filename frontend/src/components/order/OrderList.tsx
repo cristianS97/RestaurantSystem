@@ -52,6 +52,7 @@ export default function OrderList() {
     return (
         <div className="p-4">
             <h2 className="text-xl font-bold mb-4">Órdenes de Mesas</h2>
+            <button onClick={() => navigate('/order/create')}>Nueva orden</button>
             {orders.map(order => (
                 <div key={order.id} className="border rounded-lg p-4 mb-4 shadow">
                     <div><strong>Mesa:</strong> {order.table}</div>

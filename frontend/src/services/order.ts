@@ -1,4 +1,4 @@
-import type { Order, OrderInput } from "../types/order";
+import type { Order, OrderInput, Table } from "../types/order";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -61,8 +61,6 @@ export const createOrder = async (orderData : OrderInput): Promise<Order> => {
         body: JSON.stringify(orderData)
     });
 
-    console.log(response)
-
     if (!response.ok) throw new Error('Error al crear la orden');
 
     return await response.json();
@@ -70,15 +68,16 @@ export const createOrder = async (orderData : OrderInput): Promise<Order> => {
 
 export const updateOrder = async (id: number, orderData : OrderInput): Promise<Order> => {
     const token = localStorage.getItem('accessToken');
+    const userid = localStorage.getItem('userid');
     if (!token) throw new Error('No autenticado');
 
     const response = await fetch(`${API_URL}/orders/${id}/`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(orderData),
+        body: JSON.stringify({...orderData, user: Number(userid)}),
     });
 
     if (!response.ok) throw new Error('Error al actualizar la orden');
@@ -99,4 +98,20 @@ export const deleteOrder = async (id: number) => {
     });
 
     if (!response.ok) throw new Error('Error al eliminar la orden');
+};
+
+export const getTables = async (): Promise<Table[]> => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`${API_URL}/tables/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+    });
+
+    if (!response.ok) throw new Error('Error al obtener las mesas');
+
+    return await response.json();
 };

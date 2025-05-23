@@ -24,3 +24,10 @@ export interface OrderInput {
     status: OrderStatus;
     items: OrderItem[];
 }
+
+export interface Table {
+    id: number;
+    number: number;
+    capacity: number;
+    is_active: boolean;
+}
