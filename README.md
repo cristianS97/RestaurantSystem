@@ -93,8 +93,8 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
 ### Instrucciones
 
 # Clonar el repositorio
-git clone https://github.com/cristianS97/RestaurantSystem.git
-cd RestaurantSystem
+- git clone https://github.com/cristianS97/RestaurantSystem.git
+- cd RestaurantSystem
 
 # Copiar archivos .env
 cp backend/.env.example backend/.env
