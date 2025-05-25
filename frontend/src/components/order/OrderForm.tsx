@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import { getProducts } from '../../services/menu';
 import { getTables, getOrder, createOrder, updateOrder } from '../../services/order';
-import type { Table, OrderInput } from '../../types/order';
+import type { Table, OrderInput, OrderStatus } from '../../types/order';
 import type { Product } from '../../types/product';
 
 export default function OrderForm() {
@@ -14,7 +14,7 @@ export default function OrderForm() {
   const [tables, setTables] = useState<Table[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [tableId, setTableId] = useState<string>('');
-  const [status, setStatus] = useState<string>('pending');
+  const [status, setStatus] = useState<OrderStatus>('pending');
   const [selectedItems, setSelectedItems] = useState<{ productId: string, quantity: number }[]>([]);
 
   useEffect(() => {
@@ -85,7 +85,7 @@ export default function OrderForm() {
         return {
           product: Number(item.productId),
           quantity: item.quantity,
-          price: producto.price
+          price: Number(producto.price)
         };
       });
 
@@ -125,7 +125,7 @@ export default function OrderForm() {
 
         <div>
           <label>Estado:</label>
-          <select value={status} onChange={e => setStatus(e.target.value)} required className="w-full border p-2 rounded">
+          <select value={status} onChange={e => setStatus(e.target.value as OrderStatus)} required className="w-full border p-2 rounded">
             <option value="pending">Pendiente</option>
             <option value="served">Servido</option>
             <option value="paid">Pagado</option>

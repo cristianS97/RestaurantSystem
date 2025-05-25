@@ -18,11 +18,17 @@ export interface Order {
     total: number;
 }
 
+export interface OrderItemInput {
+    product: number;
+    quantity: number;
+    price: number;
+}
+
 export interface OrderInput {
     table: number;
-    user: number;
+    user?: number;
     status: OrderStatus;
-    items: OrderItem[];
+    items: OrderItemInput[];
 }
 
 export interface Table {

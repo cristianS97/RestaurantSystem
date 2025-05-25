@@ -24,7 +24,7 @@ export const getOrders = async (): Promise<Order[]> => {
     return data;
 };
 
-export const getOrder = async (id : number): Promise<Order[]> => {
+export const getOrder = async (id : number): Promise<Order> => {
     const token = localStorage.getItem('accessToken');
     if (!token) {
         throw new Error('No hay token. El usuario no está autenticado.');
@@ -48,6 +48,7 @@ export const getOrder = async (id : number): Promise<Order[]> => {
 
 export const createOrder = async (orderData : OrderInput): Promise<Order> => {
     const token = localStorage.getItem('accessToken');
+    const userid = localStorage.getItem('userid');
     if (!token) {
         throw new Error('No hay token. El usuario no está autenticado.');
     }
@@ -58,7 +59,7 @@ export const createOrder = async (orderData : OrderInput): Promise<Order> => {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify(orderData)
+        body: JSON.stringify({...orderData, user: Number(userid)})
     });
 
     if (!response.ok) throw new Error('Error al crear la orden');
@@ -114,4 +115,22 @@ export const getTables = async (): Promise<Table[]> => {
     if (!response.ok) throw new Error('Error al obtener las mesas');
 
     return await response.json();
+};
+
+export const updateOrderStatus = async (id: number, status: string) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const res = await fetch(`${API_URL}/orders/${id}/set-status/`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status }),
+    });
+
+    if (!res.ok) throw new Error('Error al cambiar estado');
+
+    return await res.json();
 };
