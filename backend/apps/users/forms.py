@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth import authenticate
+from django.contrib.auth.forms import ReadOnlyPasswordHashField
 from .models import User
 
 class UserRegisterForm(forms.ModelForm):
@@ -133,3 +134,44 @@ class VerifyForm(forms.Form):
             raise forms.ValidationError('El código no es válido')
         if not User.objects.get_code_validation(self.pk_user, codigo):
             raise forms.ValidationError('El código no es válido')
+
+# Formularios para el administrador de django
+class CustomUserCreationForm(forms.ModelForm):
+    password1 = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
+    password2 = forms.CharField(label='Confirmar contraseña', widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = [
+            'email', 'username', 'names', 'last_name', 'gender',
+            'role', 'register_cod', 'is_staff', 'is_active',
+        ]
+
+    def clean_password2(self):
+        pw1 = self.cleaned_data.get('password1')
+        pw2 = self.cleaned_data.get('password2')
+        if pw1 and pw2 and pw1 != pw2:
+            raise forms.ValidationError("Las contraseñas no coinciden")
+        return pw2
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password1"])
+        if commit:
+            user.save()
+        return user
+
+
+class CustomUserChangeForm(forms.ModelForm):
+    password = ReadOnlyPasswordHashField(label="Contraseña (hasheada)")
+
+    class Meta:
+        model = User
+        fields = [
+            'email', 'username', 'names', 'last_name', 'gender',
+            'role', 'register_cod', 'is_staff', 'is_active', 'password',
+            'groups', 'user_permissions',
+        ]
+
+    def clean_password(self):
+        return self.initial["password"]
