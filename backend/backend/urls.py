@@ -17,19 +17,42 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include, re_path
 from rest_framework import permissions
+from rest_framework.authentication import SessionAuthentication
 from drf_yasg.views import get_schema_view
+from drf_yasg.generators import OpenAPISchemaGenerator
 from drf_yasg import openapi
+
+class CustomSchemaGenerator(OpenAPISchemaGenerator):
+    def get_schema(self, request=None, public=False):
+        schema = super().get_schema(request, public)
+        schema.security = [{"Bearer": []}]
+        return schema
 
 schema_view = get_schema_view(
     openapi.Info(
         title="Restaurant System API",
         default_version='v1',
-        description="Documentación de la API para el sistema de restaurante",
+        description="""## 🔐 Autenticación JWT
+Para usar esta API:
+1. Autenticarse con usuario y contraseña en el endpoint: **`/api/token/`**, este método lo veras mas abajo como **`/token/`**  
+    - Método: `POST`
+    - Ejemplo:
+        ```json
+            {
+                "email": "usuario@ejemplo.com",
+                "password": "tu_clave"
+            }
+        ```
+2. Copiar el token de respuesta y hacer clic en el botón **Authorize** arriba a la derecha.
+3. Ingresar el token en este formato: **Bearer tu_token_jwt**
+⚠️ No olvides anteponer la palabra **Bearer** seguida de un espacio.""",
         contact=openapi.Contact(email="correo@correo.com"),
         license=openapi.License(name="MIT License"),
     ),
     public=True,
     permission_classes=[permissions.AllowAny],
+    authentication_classes=(SessionAuthentication,),
+    generator_class=CustomSchemaGenerator,
 )
 
 urlpatterns = [
