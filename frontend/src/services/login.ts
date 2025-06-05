@@ -9,11 +9,14 @@ export const login = async (email: string, password: string) => {
         body: JSON.stringify({ email, password }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-        throw new Error('Credenciales incorrectas');
+        // Si el backend devuelve "detail", lo mostramos; si no, un mensaje genérico
+        const errorMessage = data.detail || 'Credenciales incorrectas';
+        throw new Error(errorMessage);
     }
 
-    const data = await response.json();
     localStorage.setItem('accessToken', data.access);
     localStorage.setItem('refreshToken', data.refresh);
     localStorage.setItem('role', data.role);
@@ -21,6 +24,7 @@ export const login = async (email: string, password: string) => {
     localStorage.setItem('userid', data.id);
     return data;
 };
+
 
 export async function logout() {
     const refresh = localStorage.getItem('refreshToken');

@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework.exceptions import AuthenticationFailed
 from .models import User
 
 class UserRegisterSerializer(serializers.ModelSerializer):
@@ -35,7 +36,9 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
 
-        # También incluir en la respuesta (opcional pero útil en frontend)
+        if not self.user.is_active:
+            raise AuthenticationFailed("Cuenta inactiva. Verificá tu código de activación.")
+
         data['id'] = self.user.id
         data['role'] = self.user.role
         data['username'] = self.user.username
