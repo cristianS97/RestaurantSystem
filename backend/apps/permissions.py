@@ -27,3 +27,11 @@ class IsCashier(BasePermission):
     """
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role == 'cashier'
+
+class IsWaiterOrAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role in ['waiter', 'admin']
+
+class IsChefOrCashierOrAdmin(BasePermission):
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role in ['chef', 'cashier', 'admin']

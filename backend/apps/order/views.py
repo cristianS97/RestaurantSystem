@@ -5,7 +5,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from .models import Table, Order
 from .serializers import TableSerializer, OrderSerializer
-from apps.permissions import IsAdminUserRole, IsWaiter, IsChef, IsCashier
+from apps.permissions import IsAdminUserRole, IsWaiterOrAdmin, IsChefOrCashierOrAdmin
 
 # Create your views here.
 class TableViewSet(viewsets.ModelViewSet):
@@ -47,11 +47,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         if self.action in ['list', 'retrieve']:
             return [IsAuthenticated()]
         elif self.action == 'create':
-            return [IsAuthenticated(), IsWaiter() | IsAdminUserRole()]
+            return [IsWaiterOrAdmin()]
         elif self.action == 'set_status':
-            return [IsAuthenticated(), IsChef() | IsCashier() | IsAdminUserRole()]
+            return [IsChefOrCashierOrAdmin()]
         elif self.action == 'destroy':
-            return [IsAuthenticated(), IsWaiter() | IsAdminUserRole()]
+            return [IsWaiterOrAdmin()]
         return [IsAuthenticated()]
 
     def get_queryset(self):
@@ -62,4 +62,4 @@ class OrderViewSet(viewsets.ModelViewSet):
             return Order.objects.filter(status='pending')
         if user.role == 'cashier':
             return Order.objects.filter(status='served')
-        return Order.objects.all()  # admin
+        return Order.objects.all()

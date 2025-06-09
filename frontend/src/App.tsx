@@ -12,6 +12,8 @@ import OrderList from './components/order/OrderList';
 import OrderForm from './components/order/OrderForm';
 import Unauthorized from './components/navegacion/Unauthorized';
 import PrivateRoute from './components/auth/PrivateRoute';
+import KitchenPage from './components/kitchen/KitchenPage';
+import BillingPage from './components/billing/BillingPage';
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
           <Route path="/orders" element={<OrderList />} />
           <Route path="/order/create" element={<OrderForm />} />
           <Route path="/order/edit/:id" element={<OrderForm />} />
+          <Route path="/kitchen" element={<KitchenPage />} />
+          <Route path="/billing" element={<BillingPage />} />
         </Route>
       </Routes>
     </>
