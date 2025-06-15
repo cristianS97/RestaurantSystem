@@ -44,6 +44,7 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - Productos del menú
   - Mesas
   - Pedidos y detalles de pedidos (items)
+  - Reservas
 - Endpoints principales:
   - `/api/register/` – Registro de usuarios
   - `/api/verify/` – Verificación por código
@@ -52,6 +53,7 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
   - `/api/products/` – CRUD de productos
   - `/api/categories/` – CRUD de categorías
   - `/api/tables/` – CRUD de mesas
+  - `/api/reservation/` – CRUD de mesas
 
 #### Endpoints especiales para mesas:
   - `/api/tables/disponibles/` (GET)  
@@ -67,6 +69,7 @@ Sistema completo para la gestión de un restaurante, incluyendo backend con Djan
       "status": "pending" | "served" | "paid" | "cancelled"
     }  
     Retorna un mensaje de confirmación y el nuevo estado.
+  - `/api/reservation/reservas_hoy/` (GET)  
 
 ### 2. Frontend Web
 - Login y logout
