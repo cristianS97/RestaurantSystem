@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "apps.users",
     "apps.menu",
     "apps.order",
+    "apps.reservation",
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt.token_blacklist",
